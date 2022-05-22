@@ -5,7 +5,9 @@
 // @grant       none
 // @version     1.0
 // @author      Bowbylone  (Original/Credit:Ephenia, Hiroa, Ivan Lay, Novie53, andrew951)
-// @description Clicks through battles appropriately depending on the game state. Also, includes a toggle button to turn Auto Clicking on or off and various insightful statistics. Now also includes an automatic Gym battler as well as Auto Dungeon with different modes.
+// @updateURL   
+// @downloadURL
+// @description Upgraded version of Ephenia Autoclicker for Pokeclicker that provides auto achievements
 // ==/UserScript==
 
 var clickState;
