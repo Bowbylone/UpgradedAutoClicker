@@ -13,6 +13,6 @@ Only "Route" is currently working, other options coming soon.
 Seek which route has achievements to do and move the player to it.
 
 
-#Known bugs
+# Known bugs
 Doesn't work if the autoclicker is disabled then enabled again > to fix it reload the game
 Alola isn't handle for the moment, wait until next update
