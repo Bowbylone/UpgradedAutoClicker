@@ -111,11 +111,11 @@ function initClicker() {
     document.getElementById('achievement-select').value = achievementSelect;
 
     $("#auto-click-start").click(autoClick)
-    $("#auto-gym-start").click(autoGym)
+    $("#auto-gym-start").click(autoGymToggle)
     $("#gym-select").change(changeSelectedGym)
-    $("#auto-dungeon-start").click(autoDungeon)
+    $("#auto-dungeon-start").click(autoDungeonToggle)
     $("#dungeon-select").change(changeSelectedDungeon)
-    $("#auto-achievement-start").click(autoAchievement)
+    $("#auto-achievement-start").click(autoAchievementToggle)
     $("#achievement-select").change(changeSelectedAchievement)
     addGlobalStyle('#auto-click-info { display: flex;flex-direction: row;justify-content: center; }');
     addGlobalStyle('#auto-click-info > div { width: 33.3%; }');
@@ -154,7 +154,7 @@ function autoClick() {
     </div>`
 }
 
-function autoGym() {
+function autoGymToggle() {
     if (gymState == "OFF") {
         gymState = "ON"
         document.getElementById("auto-gym-start").classList.remove('btn-danger');
@@ -168,7 +168,7 @@ function autoGym() {
     document.getElementById('auto-gym-start').innerHTML = `Auto Gym [` + gymState + `]`
 }
 
-function autoDungeon() {
+function autoDungeonToggle() {
     if (dungeonState == "OFF") {
         dungeonState = "ON"
         document.getElementById("auto-dungeon-start").classList.remove('btn-danger');
@@ -182,7 +182,7 @@ function autoDungeon() {
     document.getElementById('auto-dungeon-start').innerHTML = `Auto Dungeon [` + dungeonState + `]`
 }
 
-function autoAchievement()
+function autoAchievementToggle()
 {
     if (achievementState == "OFF") {
         achievementState = "ON"
