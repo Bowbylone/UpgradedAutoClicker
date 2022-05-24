@@ -3,7 +3,7 @@
 // @namespace   Pokeclicker Scripts
 // @match       https://www.pokeclicker.com/
 // @grant       none
-// @version     1.0
+// @version     1.0.1
 // @author      Bowbylone  (Original/Credit:Ephenia, Hiroa, Ivan Lay, Novie53, andrew951)
 // @description Clicks through battles appropriately depending on the game state. Also, includes a toggle button to turn Auto Clicking on or off and various insightful statistics. Now also includes an automatic Gym battler as well as Auto Dungeon with different modes.
 // ==/UserScript==
@@ -110,12 +110,12 @@ function initClicker() {
     document.getElementById('dungeon-select').value = dungeonSelect;
     document.getElementById('achievement-select').value = achievementSelect;
 
-    $("#auto-click-start").click(toggleAutoClick)
-    $("#auto-gym-start").click(toggleAutoGym)
+    $("#auto-click-start").click(autoClick)
+    $("#auto-gym-start").click(autoGym)
     $("#gym-select").change(changeSelectedGym)
-    $("#auto-dungeon-start").click(toggleAutoDungeon)
+    $("#auto-dungeon-start").click(autoDungeon)
     $("#dungeon-select").change(changeSelectedDungeon)
-    $("#auto-achievement-start").click(toggleAutoAchievement)
+    $("#auto-achievement-start").click(autoAchievement)
     $("#achievement-select").change(changeSelectedAchievement)
     addGlobalStyle('#auto-click-info { display: flex;flex-direction: row;justify-content: center; }');
     addGlobalStyle('#auto-click-info > div { width: 33.3%; }');
@@ -123,18 +123,18 @@ function initClicker() {
 
     if (clickState == "ON") {
         clicker();
-        calcClickDPS();
+        calcClick();
     }
 }
 
-function toggleAutoClick() {
+function autoClick() {
     if (clickState == "OFF") {
         clickState = "ON"
         document.getElementById("auto-click-start").classList.remove('btn-danger');
         document.getElementById("auto-click-start").classList.add('btn-success');
         clickDPS = +localStorage.getItem('storedClickDPS');
         clicker();
-        calcClickDPS();
+        calcClick();
     } else {
         clickState = "OFF"
         document.getElementById("auto-click-start").classList.remove('btn-success');
@@ -154,7 +154,7 @@ function toggleAutoClick() {
     </div>`
 }
 
-function toggleAutoGym() {
+function autoGym() {
     if (gymState == "OFF") {
         gymState = "ON"
         document.getElementById("auto-gym-start").classList.remove('btn-danger');
@@ -168,7 +168,7 @@ function toggleAutoGym() {
     document.getElementById('auto-gym-start').innerHTML = `Auto Gym [` + gymState + `]`
 }
 
-function toggleAutoDungeon() {
+function autoDungeon() {
     if (dungeonState == "OFF") {
         dungeonState = "ON"
         document.getElementById("auto-dungeon-start").classList.remove('btn-danger');
@@ -182,7 +182,7 @@ function toggleAutoDungeon() {
     document.getElementById('auto-dungeon-start').innerHTML = `Auto Dungeon [` + dungeonState + `]`
 }
 
-function toggleAutoAchievement()
+function autoAchievement()
 {
     if (achievementState == "OFF") {
         achievementState = "ON"
@@ -222,7 +222,7 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
-function calcClickDPS() {
+function calcClick() {
     autoClickDPS = setInterval(function () {
         var enemyHealth;
         try {
