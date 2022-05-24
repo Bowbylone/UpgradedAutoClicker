@@ -100,9 +100,7 @@ function initClicker() {
     <td>
     <select id = "achievement-select">
         <option value = "0">Route</option>
-        <option value = "1">Gym</option>
-        <option value = "2">Dungeon</option>
-        <option value = "3">All</option>
+        <option value = "1">All</option>
     </select>
     </td>
     </tr>
@@ -474,7 +472,7 @@ function fullClear(dungeonBoard, bossCoords){
 
 function autoAchievement()
 {
-    //Route
+   //Route
     let currentRoute = player.route();
     let currentRegion = player.region;
 
@@ -487,14 +485,14 @@ function autoAchievement()
             currentRoute = newRoute.number;
             currentRegion = newRoute.region;
             MapHelper.moveToRoute(newRoute.number, newRoute.region);
-
-        }        
+        } 
     }
     //Gym
     else if(achievementSelect == 1)
     {
         document.getElementById('auto-achievement-start').innerHTML = `gym 2 [` + achievementState + `]`
     }
+    /*
     //Dungeon
     else if(achievementSelect == 2)
     {
@@ -504,46 +502,25 @@ function autoAchievement()
     else if(achievementSelect == 3)
     {
         document.getElementById('auto-achievement-start').innerHTML = `all 2 [` + achievementState + `]`
-    }
+    }*/
 }
 
 function getNextRoute()
 {
-    let route = getNextRegionalRoute(player.region);
-    if(route && MapHelper.accessToRoute(route.number, route.region))
-    {    
-        //The route is in the current region
-        return route;
-    }
-
-    //The route is in another region
-    
-    for(let i = 0; i <= player.highestRegion(); i++)
+    for (let i = 0; i <= player.highestRegion(); i ++)
     {
-        player.region = i;       
-        let route = getNextRegionalRoute(i);
-        if(route && MapHelper.accesToRoute(route.number, route.region))
+        player.region = i;
+        let regionRoutes = Routes.getRoutesByRegion(i);
+        for (let j = 0; j < regionRoutes.length; j ++)
         {
-            return route;
+            defeated = getDefeatedOnRoute(i, regionRoutes[j].number);
+            if(getDefeatedOnRoute(i, regionRoutes[j].number) < 10000)
+            {
+                return regionRoutes[j];
+            }
         }
     }
-}
 
-function getNextRegionalRoute(region)
-{
-    let regionRoutes = Routes.getRoutesByRegion(region);
-
-    for(i = 0; i < regionRoutes.length; i ++)
-    {
-        let defeated = getDefeatedOnRoute(region, regionRoutes[i].number);
-
-        if(getDefeatedOnRoute(region, regionRoutes[i].number) < 10000)
-        {
-            return regionRoutes[i];
-        }
-    }
-    return false;
-    
 }
 
 function getDefeatedOnRoute(region, route)
