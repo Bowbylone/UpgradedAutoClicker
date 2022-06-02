@@ -11,7 +11,3 @@ Lauch the game and go to settings, check "UpgradedAutoClicker" and uncheck "enha
 Only "Route" is currently working, other options coming soon.
 
 Seek which route has achievements to do and move the player to it.
-
-
-# Known bugs
-Alola isn't handle for the moment, wait until next update
