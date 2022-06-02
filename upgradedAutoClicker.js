@@ -3,7 +3,7 @@
 // @namespace   Pokeclicker Scripts
 // @match       https://www.pokeclicker.com/
 // @grant       none
-// @version     1.1.0
+// @version     1.1.1
 // @author      Bowbylone  (Original/Credit:Ephenia, Hiroa, Ivan Lay, Novie53, andrew951)
 // @description Clicks through battles appropriately depending on the game state. Also, includes a toggle button to turn Auto Clicking on or off and various insightful statistics. Now also includes an automatic Gym battler as well as Auto Dungeon with different modes.
 // ==/UserScript==
@@ -508,12 +508,15 @@ function autoAchievement()
             dungeonState = "ON"
             document.getElementById("auto-dungeon-start").classList.remove('btn-danger');
             document.getElementById("auto-dungeon-start").classList.add('btn-success');
+            document.getElementById("auto-dungeon-start").innerHTML = `Auto Dungeon [` + dungeonState + `]`;
+
         }
 
         //Move
         let newDungeon = getNextDungeon();
         if(newDungeon && newDungeon != currentDungeon)
         {
+            autoDungeonToggle();
             currentDungeon = newDungeon;
             currentRegion = player.region;
             MapHelper.moveToTown(newDungeon);
