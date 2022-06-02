@@ -3,7 +3,7 @@
 // @namespace   Pokeclicker Scripts
 // @match       https://www.pokeclicker.com/
 // @grant       none
-// @version     1.0.2
+// @version     1.1.0
 // @author      Bowbylone  (Original/Credit:Ephenia, Hiroa, Ivan Lay, Novie53, andrew951)
 // @description Clicks through battles appropriately depending on the game state. Also, includes a toggle button to turn Auto Clicking on or off and various insightful statistics. Now also includes an automatic Gym battler as well as Auto Dungeon with different modes.
 // ==/UserScript==
@@ -99,8 +99,8 @@ function initClicker() {
     </td>
     <td>
     <select id = "achievement-select">
-        <option value = "0">Route</option>
-        <option value = "1">All</option>
+        <option value = "0">Routes</option>
+        <option value = "1">Dungeons</option>
     </select>
     </td>
     </tr>
@@ -472,19 +472,20 @@ function fullClear(dungeonBoard, bossCoords){
 
 function autoAchievement()
 {
-   //Route
+    
     let currentRoute = player.route();
     let currentRegion = player.region;
-
+    let currentDungeon = player.town().dungeon.name;
+    //Route
     if(achievementSelect == 0)
     {
         let newRoute = getNextRoute();
         currentRoute = player.route();
-        let routes = Routes.getRoutesByRegion(6);
         if(newRoute && newRoute.number != currentRoute || newRoute.region != currentRegion)
-        {
+        {   
             currentRoute = newRoute.number;
             currentRegion = newRoute.region;
+            //Alola Handler
             if(newRoute.region === GameConstants.Region.alola)
             {
                 player.subregion = newRoute.subRegion;
@@ -493,17 +494,33 @@ function autoAchievement()
         }
     }
     //Gym
+    /*
     else if(achievementSelect == 1)
     {
         document.getElementById('auto-achievement-start').innerHTML = `gym 2 [` + achievementState + `]`
-    }
-    /*
+    }*/
+    
     //Dungeon
-    else if(achievementSelect == 2)
+    else if(achievementSelect == 1)
     {
-        document.getElementById('auto-achievement-start').innerHTML = `dungeon 2 [` + achievementState + `]`
+        //Toggle Auto Dungeon ON
+        if (dungeonState == "OFF") {
+            dungeonState = "ON"
+            document.getElementById("auto-dungeon-start").classList.remove('btn-danger');
+            document.getElementById("auto-dungeon-start").classList.add('btn-success');
+        }
+
+        //Move
+        let newDungeon = getNextDungeon();
+        if(newDungeon && newDungeon != currentDungeon)
+        {
+            currentDungeon = newDungeon;
+            currentRegion = player.region;
+            MapHelper.moveToTown(newDungeon);
+        }
     }
     //All
+    /*
     else if(achievementSelect == 3)
     {
         document.getElementById('auto-achievement-start').innerHTML = `all 2 [` + achievementState + `]`
@@ -512,25 +529,46 @@ function autoAchievement()
 
 function getNextRoute()
 {
-    for (let i = 0; i <= player.highestRegion(); i ++)
+    for(let i = 0; i <= player.highestRegion(); i ++)
     {
         player.region = i;
         let regionRoutes = Routes.getRoutesByRegion(i);
-        for (let j = 0; j < regionRoutes.length; j ++)
+        for(let j = 0; j < regionRoutes.length; j ++)
         {
-            defeated = getDefeatedOnRoute(i, regionRoutes[j].number);
             if(getDefeatedOnRoute(i, regionRoutes[j].number) < 10000)
             {
                 return regionRoutes[j];
             }
         }
     }
+}
 
+function getNextDungeon()
+{
+    for(let i = 0; i <= player.highestRegion(); i ++)
+    {
+        player.region = i;
+        let regionDungeons = GameConstants.RegionDungeons[i];
+        for(let j = 0; j < regionDungeons.length; j ++)
+        {
+            let defeated = getDefeatedOnDungeon(regionDungeons[j]);
+
+            if(getDefeatedOnDungeon(regionDungeons[j]) < 500)
+            {
+                return regionDungeons[j];
+            }
+        }
+    }
 }
 
 function getDefeatedOnRoute(region, route)
 {
     return App.game.statistics.routeKills[region][route]();
+}
+
+function getDefeatedOnDungeon(dungeonName)
+{
+    return App.game.statistics.dungeonsCleared[GameConstants.getDungeonIndex(dungeonName)]();
 }
 
 if (localStorage.getItem('autoClickState') == null) {
