@@ -9,8 +9,8 @@ Lauch the game and go to settings, check "UpgradedAutoClicker" and uncheck "enha
 
 # Auto Achievements
 
--Routes
+-Routes :
 Seek which route has achievements to do and move the player to it.
 
--Dungeons
-Sek which dungeon has achievements to do, move the player to it and toggle Auto Dungeon ON
+-Dungeons :
+Seek which dungeon has achievements to do, move the player to it and toggle Auto Dungeon ON
