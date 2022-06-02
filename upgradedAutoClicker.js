@@ -3,7 +3,7 @@
 // @namespace   Pokeclicker Scripts
 // @match       https://www.pokeclicker.com/
 // @grant       none
-// @version     1.0.1
+// @version     1.0.2
 // @author      Bowbylone  (Original/Credit:Ephenia, Hiroa, Ivan Lay, Novie53, andrew951)
 // @description Clicks through battles appropriately depending on the game state. Also, includes a toggle button to turn Auto Clicking on or off and various insightful statistics. Now also includes an automatic Gym battler as well as Auto Dungeon with different modes.
 // ==/UserScript==
@@ -480,12 +480,17 @@ function autoAchievement()
     {
         let newRoute = getNextRoute();
         currentRoute = player.route();
+        let routes = Routes.getRoutesByRegion(6);
         if(newRoute && newRoute.number != currentRoute || newRoute.region != currentRegion)
         {
             currentRoute = newRoute.number;
             currentRegion = newRoute.region;
+            if(newRoute.region === GameConstants.Region.alola)
+            {
+                player.subregion = newRoute.subRegion;
+            }
             MapHelper.moveToRoute(newRoute.number, newRoute.region);
-        } 
+        }
     }
     //Gym
     else if(achievementSelect == 1)
